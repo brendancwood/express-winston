@@ -304,7 +304,10 @@ exports.logger = function logger(options) {
                 chalk.grey("{{res.responseTime}}ms");
               coloredRes.statusCode = chalk[statusColor](res.statusCode);
             }
-            var msgFormat = !options.expressFormat ? options.msg : expressMsgFormat;
+
+            var msgFormat = !options.expressFormat ?
+              typeof options.msg === 'function' ? options.msg(req, res) : options.msg
+              : expressMsgFormat
 
             // Using mustache style templating
             var template = _.template(msgFormat, {
